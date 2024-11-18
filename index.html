@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum de Discussão</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: auto;
+        }
+        .formulario {
+            background: #f5f5f5;
+            width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0px 2px 5px #0000005f;
+        }
+        .container {
+            width: 450px;
+            color: #041;
+        }
+        .container input, .container textarea {
+            width: 350px;
+            padding: 5px;
+            margin: 5px;
+            border: solid 1px #aaa;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+        }
+        .botao {
+            background: #094;
+            color: #fff;
+            padding: 7px 10px;
+            border: none;
+            border-radius: 2px;
+            position: relative;
+            left: 310px;
+            box-shadow: 0px 2px 2px #0000009f;
+            cursor: pointer;
+        }
+        .botao:active {
+            background: #083;
+            box-shadow: 0px 0px 1px #0000009f;
+        }
+        .lista {
+            padding: 20px;
+            margin: 20px 0;
+            width: 400px;
+            border-radius: 10px;
+            background: #efe;
+            box-shadow: 0px 2px 5px #0000005f;
+        }
+        .exc {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            position: relative;
+            top: 20px;
+            left: 170px;
+            background: #c55;
+            width: 60px;
+            text-align: center;
+            padding: 3px;
+            border-radius: 4px 4px 0px 0;
+            cursor: pointer;
+        }
+        .autor {
+            color: #083;
+            margin: 10px 0;
+        }
+        .comentario {
+            margin: 20px 0 0 0;
+            color: #576;
+        }
+        .avatar {
+            background: #8ca;
+            border-radius: 100%;
+            width: 30px;
+            height: 30px;
+            float: left;
+            margin: 3px 10px 0px 0px;
+            box-shadow: 0px 0px 9px #003f1fa9 inset;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <!-- Formulário -->
+        <div class="formulario">
+            <h1>Fórum de discussão</h1>
+            <p>
+                <input 
+                    type="text" 
+                    v-model="newComment.author" 
+                    placeholder="Usuário">
+            </p>
+            <p>
+                <textarea 
+                    v-model="newComment.message" 
+                    cols="30" 
+                    rows="5" 
+                    placeholder="Postagem"></textarea>
+            </p>
+            <button type="button" class="botao" @click="addComment">Postar</button>
+        </div>
+        <!-- Lista de Comentários -->
+        <div v-for="(comment, index) in comments" :key="index" class="lista">
+            <div class="avatar"></div>
+            <p class="autor"><b>{{ comment.author }}</b></p>
+            <p class="comentario">{{ comment.message }}</p>
+            <p><a href="#" class="exc" @click.prevent="deleteComment(index)">Excluir</a></p>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                // Armazena os dados de um novo comentário
+                newComment: {
+                    author: "",
+                    message: ""
+                },
+                // Lista de comentários postados
+                comments: []
+            },
+            methods: {
+                // Adiciona um novo comentário à lista
+                addComment() {
+                    if (this.newComment.author && this.newComment.message) {
+                        this.comments.push({
+                            author: this.newComment.author,
+                            message: this.newComment.message
+                        });
+                        // Limpa o formulário
+                        this.newComment.author = "";
+                        this.newComment.message = "";
+                    } else {
+                        alert("Por favor, preencha todos os campos!");
+                    }
+                },
+                // Exclui um comentário pelo índice
+                deleteComment(index) {
+                    this.comments.splice(index, 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
